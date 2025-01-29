@@ -68,8 +68,8 @@ class WarehouseResource extends Resource
             ->columns([
                 TextColumn::make('name')->searchable(),
                 TextColumn::make('location'),
-                TextColumn::make('users.count')->label('emplyess')->default(0)->badge(),
-                TextColumn::make('items.count')->default(0)->badge()
+                TextColumn::make('users.count')->label('Emplyess Count')->default(0)->badge(),
+                TextColumn::make('items.count')->default(0)->label('Items Count')->badge()
             ])
             ->filters([])
             ->actions([
