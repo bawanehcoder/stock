@@ -1,0 +1,9 @@
+{
+    "conflicts": [
+        {
+            "id": "da84da35-595c-46e2-8368-300e4a8cb7d4",
+            "currentContent": "<?php\n\nnamespace App\\Filament\\Resources\\Panel\\SupplierResource\\Pages;\n\nuse App\\Filament\\Resources\\Panel\\SupplierResource\\Widgets\\Overview;\nuse Filament\\Actions;\nuse Filament\\Pages\\Concerns\\ExposesTableToWidgets;\nuse Filament\\Resources\\Pages\\ListRecords;\nuse App\\Filament\\Resources\\Panel\\SupplierResource;\n\nclass ListSuppliers extends ListRecords\n{\n    use ExposesTableToWidgets;\n    protected static string $resource = SupplierResource::class;\n\n    protected function getHeaderActions(): array\n    {\n        return [Actions\\CreateAction::make()];\n    }\n    protected function getHeaderWidgets(): array\n    {\n        return [\n            Overview::class,\n        ];\n    }\n}\n",
+            "newContent": "<?php\n\nnamespace App\\Filament\\Resources\\Panel\\SupplierResource\\Pages;\n\nuse Filament\\Actions;\nuse Filament\\Resources\\Pages\\ListRecords;\nuse App\\Filament\\Resources\\Panel\\SupplierResource;\n\nclass ListSuppliers extends ListRecords\n{\n    protected static string $resource = SupplierResource::class;\n\n    protected function getHeaderActions(): array\n    {\n        return [Actions\\CreateAction::make()];\n    }\n}\n"
+        }
+    ]
+}
