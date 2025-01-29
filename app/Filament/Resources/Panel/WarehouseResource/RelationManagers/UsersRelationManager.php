@@ -17,6 +17,25 @@ class UsersRelationManager extends RelationManager
 
     protected static ?string $recordTitleAttribute = 'name';
 
+    protected static ?string $label = 'Employee';
+
+    /**
+     * @deprecated Override the `table()` method to configure the table.
+     */
+    protected static ?string $pluralLabel = 'Employees';
+
+    /**
+     * @deprecated Override the `table()` method to configure the table.
+     */
+    protected static ?string $modelLabel = 'Employee';
+
+    /**
+     * @deprecated Override the `table()` method to configure the table.
+     */
+    protected static ?string $pluralModelLabel = 'Employees';
+
+    protected static ?string $title = 'Employees';
+
     public function form(Form $form): Form
     {
         return $form->schema([Grid::make(['default' => 1])->schema([])]);

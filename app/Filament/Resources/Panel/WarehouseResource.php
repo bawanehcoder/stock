@@ -47,7 +47,7 @@ class WarehouseResource extends Resource
     {
         return $form->schema([
             Section::make()->schema([
-                Grid::make(['default' => 1])->schema([
+                Grid::make(['default' => 2])->schema([
                     TextInput::make('name')
                         ->required()
                         ->string()
@@ -68,8 +68,14 @@ class WarehouseResource extends Resource
             ->columns([
                 TextColumn::make('name')->searchable(),
                 TextColumn::make('location'),
-                TextColumn::make('users.count')->label('Emplyess Count')->default(0)->badge(),
+                TextColumn::make('users.count')->label('Emplyess Count')->default(0)->badge()
+                ->getStateUsing(function ($record){
+                    return $record->users->count();
+                }),
                 TextColumn::make('items.count')->default(0)->label('Items Count')->badge()
+                ->getStateUsing(function ($record){
+                    return $record->items->count();
+                }),
             ])
             ->filters([])
             ->actions([

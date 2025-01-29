@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Panel\WarehouseResource\RelationManagers;
 use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Form;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Table;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
@@ -55,11 +56,21 @@ class ItemsRelationManager extends RelationManager
     {
         return $table
             ->columns([
-                TextColumn::make('name'),
+                TextColumn::make('barcode')->searchable(),
+                ImageColumn::make('barcode_image'),
+                TextColumn::make('name')->searchable(),
 
-                TextColumn::make('status'),
+                TextColumn::make('status')
+                ->badge()
+                ->color(
+                    fn(string $state): string => match ($state) {
+                        'in_maintenance' => 'info',
+                        'in_where_house' => 'success',
+                        'damaged' => 'danger',
+                    }
+                ),
 
-                TextColumn::make('user.name'),
+                
             ])
             ->filters([])
             ->headerActions([Tables\Actions\CreateAction::make()])

@@ -5,7 +5,7 @@
                 "uuid": "df92816c-91ba-425d-b481-a71bb1a20579",
                 "id": 1,
                 "createdAt": "2025-01-29 16:24:53",
-                "updatedAt": "2025-01-29 22:46:00",
+                "updatedAt": "2025-01-29 23:27:43",
                 "settings": {
                     "cssFramework": "tailwind",
                     "uiStarterKit": "jetstream",
@@ -280,7 +280,7 @@
                 "connectionFinished": true,
                 "canIgnoreNextSchemaSourceChanges": false,
                 "filesQueueStatus": "idle",
-                "lastReadSchemaDataHash": "5b93973f53add0dd35760d1acbde7bc2",
+                "lastReadSchemaDataHash": "b64e077d72d3f9d6ee18d49efa215535",
                 "currentZoom": 70,
                 "currentRenderedFilesPaths": [
                     "/lang/en//navigation.php",
@@ -8448,12 +8448,12 @@
         "schema_sections": {
             "item_1": {
                 "name": "App",
-                "scrollX": 25280.80078125,
-                "scrollY": 24485.599609375,
+                "scrollX": 24836.80078125,
+                "scrollY": 24543.19921875,
                 "projectId": 1,
                 "id": 1,
                 "createdAt": "2025-01-29 16:24:54",
-                "updatedAt": "2025-01-29 22:12:46"
+                "updatedAt": "2025-01-29 23:23:07"
             },
             "__tableData": {
                 "count": 3,
