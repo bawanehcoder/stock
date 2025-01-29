@@ -5,6 +5,10 @@ namespace App\Filament\Resources\Panel;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\Item;
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\SelectFilter;
 use Livewire\Component;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
@@ -88,23 +92,53 @@ class ItemResource extends Resource
         return $table
             ->poll('60s')
             ->columns([
-                TextColumn::make('name'),
+                TextColumn::make('barcode')->searchable(),
+                ImageColumn::make('barcode_image'),
+                TextColumn::make('name')->searchable(),
 
-                TextColumn::make('status'),
+                TextColumn::make('status')
+                ->badge()
+                ->color(
+                    fn(string $state): string => match ($state) {
+                        'in_maintenance' => 'info',
+                        'in_where_house' => 'success',
+                        'damaged' => 'danger',
+                    }
+                ),
 
-                TextColumn::make('user.name'),
 
                 TextColumn::make('warehouse.name'),
             ])
-            ->filters([])
+            ->filters([
+                
+
+                SelectFilter::make('warehouse_id')
+                    ->relationship('warehouse', 'name'),
+
+            ])
+
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\ViewAction::make(),
+                // Tables\Actions\EditAction::make(),
+                // Tables\Actions\ViewAction::make(),
+                Action::make('assign_to_user')
+                ->button()
+                ->color('success')
+                    ->icon('heroicon-m-user-circle')
+                    ->tooltip('Assign to user'),
+                    Action::make('send_to_maintenance_departments')
+                    ->iconButton()
+                    ->icon('heroicon-m-wrench-screwdriver')
+                    ->tooltip('Send to Maintenance Departments'),
+                    // Action::make('damged')
+                    // ->iconButton()
+                    // ->color('danger')
+                    // ->icon('heroicon-m-trash')
+                    // ->tooltip('Mark as Damged')
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                // Tables\Actions\BulkActionGroup::make([
+                //     Tables\Actions\DeleteBulkAction::make(),
+                // ]),
             ])
             ->defaultSort('id', 'desc');
     }

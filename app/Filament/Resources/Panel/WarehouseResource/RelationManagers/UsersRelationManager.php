@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Panel\WarehouseResource\RelationManagers;
 use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Form;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Forms\Components\Grid;
 use Illuminate\Database\Eloquent\Builder;
@@ -44,7 +45,11 @@ class UsersRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->columns([])
+            ->columns([
+                TextColumn::make('name'),
+                TextColumn::make('email'),
+                TextColumn::make('roles.name')->badge(),
+            ])
             ->filters([])
             ->headerActions([
                 Tables\Actions\AttachAction::make()->form(
@@ -58,6 +63,7 @@ class UsersRelationManager extends RelationManager
                 Tables\Actions\DeleteAction::make(),
                 Tables\Actions\DetachAction::make(),
             ])
+            
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
