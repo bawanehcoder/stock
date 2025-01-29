@@ -24,8 +24,9 @@ class OrderItemFactory extends Factory
     {
         return [
             'name' => fake()->name(),
-            'status' => fake()->word(),
             'price' => fake()->randomFloat(2, 0, 9999),
+            'barcode' => fake()->text(255),
+            'barcode_image' => fake()->text(255),
             'order_id' => \App\Models\Order::factory(),
         ];
     }

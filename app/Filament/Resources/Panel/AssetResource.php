@@ -22,11 +22,11 @@ class AssetResource extends Resource
 {
     protected static ?string $model = Asset::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-banknotes';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 5;
 
-    protected static ?string $navigationGroup = 'Admin';
+    protected static ?string $navigationGroup = 'Stock Management';
 
     public static function getModelLabel(): string
     {
@@ -122,5 +122,9 @@ class AssetResource extends Resource
             'view' => Pages\ViewAsset::route('/{record}'),
             'edit' => Pages\EditAsset::route('/{record}/edit'),
         ];
+    }
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
     }
 }

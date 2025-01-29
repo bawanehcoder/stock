@@ -23,11 +23,11 @@ class MaintenanceItemResource extends Resource
 {
     protected static ?string $model = MaintenanceItem::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-cog';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 8;
 
-    protected static ?string $navigationGroup = 'Admin';
+    protected static ?string $navigationGroup = 'Maintenance';
 
     public static function getModelLabel(): string
     {
@@ -125,5 +125,9 @@ class MaintenanceItemResource extends Resource
             'view' => Pages\ViewMaintenanceItem::route('/{record}'),
             'edit' => Pages\EditMaintenanceItem::route('/{record}/edit'),
         ];
+    }
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
     }
 }

@@ -7,7 +7,6 @@ use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Forms\Components\Grid;
-use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
@@ -29,18 +28,6 @@ class OrderItemsRelationManager extends RelationManager
                     ->string()
                     ->autofocus(),
 
-                Select::make('status')
-                    ->required()
-                    ->searchable()
-                    ->preload()
-                    ->native(false)
-                    ->options([
-                        'in_where_house' => 'In where house',
-                        'asset' => 'Asset',
-                        'in_maintenance' => 'In maintenance',
-                        'damaged' => 'Damaged',
-                    ]),
-
                 TextInput::make('price')
                     ->required()
                     ->numeric()
@@ -52,13 +39,7 @@ class OrderItemsRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->columns([
-                TextColumn::make('name'),
-
-                TextColumn::make('status'),
-
-                TextColumn::make('price'),
-            ])
+            ->columns([TextColumn::make('name'), TextColumn::make('price')])
             ->filters([])
             ->headerActions([Tables\Actions\CreateAction::make()])
             ->actions([

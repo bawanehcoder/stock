@@ -30,4 +30,9 @@ class Warehouse extends Model
     {
         return $this->hasMany(Order::class);
     }
+
+    public function damageds()
+    {
+        return $this->hasMany(Damaged::class);
+    }
 }

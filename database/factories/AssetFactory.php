@@ -25,6 +25,8 @@ class AssetFactory extends Factory
         return [
             'name' => fake()->name(),
             'status' => fake()->word(),
+            'barcode' => fake()->text(255),
+            'barcode_image' => fake()->text(255),
             'user_id' => \App\Models\User::factory(),
             'warehouse_id' => \App\Models\Warehouse::factory(),
         ];

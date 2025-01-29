@@ -346,4 +346,107 @@ return [
             ],
         ],
     ],
+    'damageds' => [
+        'itemTitle' => 'Damaged',
+        'collectionTitle' => 'Damageds',
+        'inputs' => [
+            'name' => [
+                'label' => 'Name',
+                'placeholder' => 'Name',
+            ],
+            'status' => [
+                'label' => 'Status',
+                'placeholder' => 'Status',
+            ],
+            'warehouse_id' => [
+                'label' => 'Warehouse id',
+                'placeholder' => 'Warehouse id',
+            ],
+            'user_id' => [
+                'label' => 'User id',
+                'placeholder' => 'User id',
+            ],
+            'barcode' => [
+                'label' => 'Barcode',
+                'placeholder' => 'Barcode',
+            ],
+            'barcode_image' => [
+                'label' => 'Barcode image',
+                'placeholder' => 'Barcode image',
+            ],
+        ],
+        'filament' => [
+            'name' => [
+                'helper_text' => '',
+                'label' => '',
+                'description' => '',
+            ],
+            'status' => [
+                'helper_text' => '',
+                'loading_message' => '',
+                'no_result_message' => '',
+                'search_message' => '',
+                'label' => '',
+            ],
+            'warehouse_id' => [
+                'helper_text' => '',
+                'loading_message' => '',
+                'no_result_message' => '',
+                'search_message' => '',
+                'label' => '',
+            ],
+            'user_id' => [
+                'helper_text' => '',
+                'loading_message' => '',
+                'no_result_message' => '',
+                'search_message' => '',
+                'label' => '',
+            ],
+            'barcode' => [
+                'helper_text' => '',
+                'label' => '',
+                'description' => '',
+            ],
+            'barcode_image' => [
+                'helper_text' => '',
+                'label' => '',
+                'description' => '',
+            ],
+        ],
+    ],
+    'users' => [
+        'itemTitle' => 'Employee',
+        'collectionTitle' => 'Employees',
+        'inputs' => [
+            'name' => [
+                'label' => 'Name',
+                'placeholder' => 'Name',
+            ],
+            'email' => [
+                'label' => 'Email',
+                'placeholder' => 'Email',
+            ],
+            'password' => [
+                'label' => 'Password',
+                'placeholder' => 'Password',
+            ],
+        ],
+        'filament' => [
+            'name' => [
+                'helper_text' => '',
+                'label' => '',
+                'description' => '',
+            ],
+            'email' => [
+                'helper_text' => '',
+                'label' => '',
+                'description' => '',
+            ],
+            'password' => [
+                'helper_text' => '',
+                'label' => '',
+                'description' => '',
+            ],
+        ],
+    ],
 ];

@@ -22,11 +22,11 @@ class WarehouseResource extends Resource
 {
     protected static ?string $model = Warehouse::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-home-modern';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 3;
 
-    protected static ?string $navigationGroup = 'Admin';
+    protected static ?string $navigationGroup = 'Stock Management';
 
     public static function getModelLabel(): string
     {
@@ -69,13 +69,13 @@ class WarehouseResource extends Resource
                 TextColumn::make('name')->searchable(),
                 TextColumn::make('location'),
                 TextColumn::make('users.count')->label('Emplyess Count')->default(0)->badge()
-                ->getStateUsing(function ($record){
-                    return $record->users->count();
-                }),
+                    ->getStateUsing(function ($record) {
+                        return $record->users->count();
+                    }),
                 TextColumn::make('items.count')->default(0)->label('Items Count')->badge()
-                ->getStateUsing(function ($record){
-                    return $record->items->count();
-                }),
+                    ->getStateUsing(function ($record) {
+                        return $record->items->count();
+                    }),
             ])
             ->filters([])
             ->actions([
@@ -113,5 +113,9 @@ class WarehouseResource extends Resource
         return [
             Overview::class,
         ];
+    }
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
     }
 }

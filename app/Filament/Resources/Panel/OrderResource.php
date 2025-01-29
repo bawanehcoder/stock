@@ -27,11 +27,11 @@ class OrderResource extends Resource
 {
     protected static ?string $model = Order::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-shopping-cart';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 2;
 
-    protected static ?string $navigationGroup = 'Admin';
+    protected static ?string $navigationGroup = 'Check In';
 
     public static function getModelLabel(): string
     {
@@ -137,38 +137,38 @@ class OrderResource extends Resource
                                     'Approve' => 'Approve',
                                     'Reject' => 'Reject',
                                 ];
-                
-                        
-                
+
+
+
                                 return $options;
                             })
                             ->required()
                             ->placeholder('Select a status')
                             ->default(fn($record) => $record->status ?? 'pending')
                             ->reactive(),
-    
-                       
-    
-    
+
+
+
+
                     ])
                     ->action(function ($record, array $data) {
                         // Update the status when the action is triggered
                         $record->status = $data['status'];
                         $record->save();
-                        if($record->status == 'Approve'){
-                            foreach ($record->orderItems as  $asset) {
-                               $item = new Item();
-                               $item->name = $asset->name;
-                               $item->barcode = $asset->barcode;
-                               $item->barcode_image = $asset->barcode_image;
-                               $item->status = 'in_where_house';
-                               $item->warehouse_id = $record->warehouse_id;
-                               $item->save();
-                               
+                        if ($record->status == 'Approve') {
+                            foreach ($record->orderItems as $asset) {
+                                $item = new Item();
+                                $item->name = $asset->name;
+                                $item->barcode = $asset->barcode;
+                                $item->barcode_image = $asset->barcode_image;
+                                $item->status = 'in_where_house';
+                                $item->warehouse_id = $record->warehouse_id;
+                                $item->save();
+
                             }
                         }
 
-    
+
                     })
             ])
             ->bulkActions([
@@ -198,5 +198,9 @@ class OrderResource extends Resource
         return [
             Overview::class,
         ];
+    }
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
     }
 }

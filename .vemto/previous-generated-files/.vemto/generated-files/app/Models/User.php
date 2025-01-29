@@ -98,4 +98,14 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(MaintenanceDepartment::class);
     }
+
+    /**
+     * Get all of the damageds.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function damageds()
+    {
+        return $this->hasMany(Damaged::class);
+    }
 }
