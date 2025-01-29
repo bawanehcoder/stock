@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Panel\OrderResource\RelationManagers;
 use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Form;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Table;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
@@ -29,17 +30,10 @@ class OrderItemsRelationManager extends RelationManager
                     ->string()
                     ->autofocus(),
 
-                Select::make('status')
+                TextInput::make('barcode')
                     ->required()
-                    ->searchable()
-                    ->preload()
-                    ->native(false)
-                    ->options([
-                        'in_where_house' => 'In where house',
-                        'asset' => 'Asset',
-                        'in_maintenance' => 'In maintenance',
-                        'damaged' => 'Damaged',
-                    ]),
+                    ->string()
+                    ->autofocus(),
 
                 TextInput::make('price')
                     ->required()
@@ -53,11 +47,10 @@ class OrderItemsRelationManager extends RelationManager
     {
         return $table
             ->columns([
-                TextColumn::make('name'),
-
-                TextColumn::make('status'),
-
-                TextColumn::make('price'),
+                TextColumn::make('barcode')->searchable(),
+                ImageColumn::make('barcode_image'),
+                TextColumn::make('name')->searchable(),
+                TextColumn::make('price')->searchable(),
             ])
             ->filters([])
             ->headerActions([Tables\Actions\CreateAction::make()])

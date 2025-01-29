@@ -6,6 +6,7 @@ use App\Filament\Resources\Panel\OrderResource\Widgets\Overview;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\Order;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
 use Livewire\Component;
@@ -50,7 +51,7 @@ class OrderResource extends Resource
     {
         return $form->schema([
             Section::make()->schema([
-                Grid::make(['default' => 1])->schema([
+                Grid::make(['default' => 2])->schema([
                     Select::make('supplier_id')
                         ->required()
                         ->relationship('supplier', 'name')
@@ -114,6 +115,10 @@ class OrderResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make(),
+                Action::make('change_status')
+                ->iconButton()
+                ->icon('heroicon-m-arrow-path')
+                ->tooltip('Change Status')
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
