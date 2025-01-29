@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Panel;
 
+use App\Models\User;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\Item;
@@ -45,6 +46,11 @@ class ItemResource extends Resource
     public static function getNavigationLabel(): string
     {
         return __('crud.items.collectionTitle');
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return static::getModel()::query()->where('status','in_where_house');
     }
 
     public static function form(Form $form): Form
@@ -124,6 +130,24 @@ class ItemResource extends Resource
                 ->button()
                 ->color('success')
                     ->icon('heroicon-m-user-circle')
+                    ->form(
+                        [
+                            Select::make('user_id')
+                            ->required()
+                            ->searchable()
+                            ->options(function () {
+                                return User::all()
+                                    ->pluck('name', 'id');
+                            })
+                            ->placeholder('Select a User')
+                        ]
+                    )
+                    ->action(function ($record, array $data) {
+                        // Update the status when the action is triggered
+                        $record->status = 'asset';
+                        $record->user_id = $data['user_id'];
+                        $record->save();
+                    })
                     ->tooltip('Assign to user'),
                     Action::make('send_to_maintenance_departments')
                     ->iconButton()
@@ -159,6 +183,6 @@ class ItemResource extends Resource
     }
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::count();
+        return static::getModel()::query()->where('status','in_where_house')->count();
     }
 }

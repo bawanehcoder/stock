@@ -5,6 +5,10 @@ namespace App\Filament\Resources\Panel;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\Asset;
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\SelectFilter;
 use Livewire\Component;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
@@ -88,23 +92,48 @@ class AssetResource extends Resource
         return $table
             ->poll('60s')
             ->columns([
-                TextColumn::make('name'),
+                TextColumn::make('barcode')->searchable(),
+                ImageColumn::make('barcode_image'),
+                TextColumn::make('name')->searchable(),
 
-                TextColumn::make('status'),
-
+                TextColumn::make('status')
+                    ->badge()
+                    ->color('success'),
                 TextColumn::make('user.name'),
 
-                TextColumn::make('warehouse.name'),
             ])
-            ->filters([])
+            ->filters([
+                SelectFilter::make('warehouse_id')
+                    ->relationship('warehouse', 'name'),
+                SelectFilter::make('user_id')
+                    ->relationship('user', 'name'),
+            ], FiltersLayout::AboveContent)
+            ->filtersFormColumns(2)
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\ViewAction::make(),
+                // Tables\Actions\EditAction::make(),
+                // Tables\Actions\ViewAction::make(),
+                Action::make('return_to_warehouse')
+                    ->button()
+                    ->color('success')
+                    ->icon('heroicon-m-home-modern')
+                    ->requiresConfirmation()
+                    
+                    ->action(function ($record, array $data) {
+                        // Update the status when the action is triggered
+                        $record->status = 'in_where_house';
+                        $record->user_id = null;
+                        $record->save();
+                    })
+                    ->tooltip('Return to warehouse'),
+                Action::make('send_to_maintenance_departments')
+                    ->iconButton()
+                    ->icon('heroicon-m-wrench-screwdriver')
+                    ->tooltip('Send to Maintenance Departments'),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                // Tables\Actions\BulkActionGroup::make([
+                //     Tables\Actions\DeleteBulkAction::make(),
+                // ]),
             ])
             ->defaultSort('id', 'desc');
     }
@@ -125,6 +154,10 @@ class AssetResource extends Resource
     }
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::count();
+        return static::getModel()::query()->where('status', 'asset')->count();
+    }
+    public static function getEloquentQuery(): Builder
+    {
+        return static::getModel()::query()->where('status', 'asset');
     }
 }

@@ -91,6 +91,11 @@ class DamagedResource extends Resource
         ]);
     }
 
+    public static function getEloquentQuery(): Builder
+    {
+        return static::getModel()::query()->where('status','damaged');
+    }
+
     public static function table(Table $table): Table
     {
         return $table
@@ -137,6 +142,6 @@ class DamagedResource extends Resource
     }
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::count();
+        return static::getModel()::query()->where('status','damaged')->count();
     }
 }
