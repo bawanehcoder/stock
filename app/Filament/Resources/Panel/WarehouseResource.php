@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Panel;
 
+use App\Filament\Resources\Panel\WarehouseResource\Widgets\Overview;
 use Filament\Forms;
 use Filament\Tables;
 use Livewire\Component;
@@ -64,7 +65,12 @@ class WarehouseResource extends Resource
     {
         return $table
             ->poll('60s')
-            ->columns([TextColumn::make('name'), TextColumn::make('location')])
+            ->columns([
+                TextColumn::make('name')->searchable(),
+                TextColumn::make('location'),
+                TextColumn::make('users.count')->label('emplyess')->default(0)->badge(),
+                TextColumn::make('items.count')->default(0)->badge()
+            ])
             ->filters([])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -93,6 +99,13 @@ class WarehouseResource extends Resource
             'create' => Pages\CreateWarehouse::route('/create'),
             'view' => Pages\ViewWarehouse::route('/{record}'),
             'edit' => Pages\EditWarehouse::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            Overview::class,
         ];
     }
 }

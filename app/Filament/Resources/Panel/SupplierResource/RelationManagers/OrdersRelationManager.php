@@ -35,9 +35,15 @@ class OrdersRelationManager extends RelationManager
                     ->required()
                     ->string(),
 
-                TextInput::make('status')
-                    ->required()
-                    ->string(),
+                Select::make('status')
+                ->searchable()
+                ->preload()
+                    ->options([
+                        'Waiting' => 'Waiting',
+                        'Approve' => 'Approve',
+                        'Reject' => 'Reject',
+                    ])
+                    ->required(),
             ]),
         ]);
     }

@@ -70,9 +70,15 @@ class OrderResource extends Resource
                         ->required()
                         ->string(),
 
-                    TextInput::make('status')
-                        ->required()
-                        ->string(),
+                    Select::make('status')
+                        ->searchable()
+                        ->preload()
+                        ->options([
+                            'Waiting' => 'Waiting',
+                            'Approve' => 'Approve',
+                            'Reject' => 'Reject',
+                        ])
+                        ->required(),
                 ]),
             ]),
         ]);
@@ -116,9 +122,9 @@ class OrderResource extends Resource
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make(),
                 Action::make('change_status')
-                ->iconButton()
-                ->icon('heroicon-m-arrow-path')
-                ->tooltip('Change Status')
+                    ->iconButton()
+                    ->icon('heroicon-m-arrow-path')
+                    ->tooltip('Change Status')
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
