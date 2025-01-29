@@ -79,6 +79,8 @@ class OrderResource extends Resource
                             'Approve' => 'Approve',
                             'Reject' => 'Reject',
                         ])
+                        ->disabled()
+                        ->default('Waiting')
                         ->required(),
                 ]),
             ]),
@@ -129,7 +131,7 @@ class OrderResource extends Resource
                     ->form([
                         // Status dropdown
                         Select::make('status')
-                            ->label('Booking Status')
+                            ->label('Status')
                             ->options(function ($record) {
                                 // Base options
                                 $options = [

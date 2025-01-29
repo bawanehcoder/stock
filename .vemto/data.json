@@ -5,7 +5,7 @@
                 "uuid": "df92816c-91ba-425d-b481-a71bb1a20579",
                 "id": 1,
                 "createdAt": "2025-01-29 16:24:53",
-                "updatedAt": "2025-01-30 00:00:09",
+                "updatedAt": "2025-01-30 01:22:28",
                 "settings": {
                     "cssFramework": "tailwind",
                     "uiStarterKit": "jetstream",
@@ -335,7 +335,7 @@
                 "connectionFinished": true,
                 "canIgnoreNextSchemaSourceChanges": false,
                 "filesQueueStatus": "idle",
-                "lastReadSchemaDataHash": "bca9efa5056a72bb628a2ccb6dd40688",
+                "lastReadSchemaDataHash": "3fb8fbd5362660049ca063e55c381fcc",
                 "currentZoom": 70,
                 "currentRenderedFilesPaths": [
                     "/lang/en//navigation.php",
