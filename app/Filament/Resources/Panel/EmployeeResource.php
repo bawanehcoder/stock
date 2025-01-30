@@ -48,7 +48,7 @@ class EmployeeResource extends Resource
     {
         return $form->schema([
             Section::make()->schema([
-                Grid::make(['default' => 1])->schema([
+                Grid::make(['default' => 2])->schema([
                     TextInput::make('name')
                         ->required()
                         ->string()
