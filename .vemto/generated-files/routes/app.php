@@ -16,7 +16,22 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('/dashboard')
     ->name('dashboard.')
     ->middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])
-    ->group(function () {});
+    ->group(function () {
+        Route::get(
+            '/suppliers',
+            App\Livewire\Dashboard\SupplierIndex::class
+        )->name('suppliers.index');
+
+        Route::get(
+            '/suppliers/create',
+            App\Livewire\Dashboard\SupplierCreate::class
+        )->name('suppliers.create');
+
+        Route::get(
+            '/suppliers/{supplier}',
+            App\Livewire\Dashboard\SupplierEdit::class
+        )->name('suppliers.edit');
+    });
 
 // API
 Route::prefix('/api')

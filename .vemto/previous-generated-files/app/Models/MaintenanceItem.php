@@ -21,13 +21,13 @@ class MaintenanceItem extends Model
         return $this->belongsTo(MaintenanceDepartment::class);
     }
 
-    public function asset()
-    {
-        return $this->belongsTo(Asset::class);
-    }
-
     public function damaged()
     {
         return $this->belongsTo(Damaged::class);
+    }
+
+    public function asset()
+    {
+        return $this->belongsTo(Asset::class);
     }
 }

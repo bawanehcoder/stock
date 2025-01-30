@@ -2,8 +2,11 @@
 
 namespace App\Filament\Resources\Panel;
 
+use App\Models\MaintenanceDepartment;
+use App\Models\MaintenanceItem;
 use App\Models\User;
 use Filament\Forms;
+use Filament\Forms\Components\Textarea;
 use Filament\Tables;
 use App\Models\Item;
 use Filament\Tables\Actions\Action;
@@ -152,7 +155,37 @@ class ItemResource extends Resource
                     Action::make('send_to_maintenance_departments')
                     ->iconButton()
                     ->icon('heroicon-m-wrench-screwdriver')
-                    ->tooltip('Send to Maintenance Departments'),
+                    ->tooltip('Send to Maintenance Departments')
+                    ->form(
+                        [
+                            Select::make('maintenance_department_id')
+                            ->required()
+                            ->searchable()
+                            ->options(function () {
+                                return MaintenanceDepartment::all()
+                                    ->pluck('name', 'id');
+                            })
+                            ->placeholder('Select a Department'),
+                            Textarea::make('note'),
+                        ]
+                    )
+                    
+                    ->action(function ($record, array $data) {
+                        // Update the status when the action is triggered
+                        $record->status = 'in_maintenance';
+                        $record->maintenance_department_id = $data['maintenance_department_id'];
+
+                        $item = new MaintenanceItem();
+                        $item->asset_id = $record->id;
+                        $item->item_id = $record->id;
+                        $item->damaged_id  = $record->id;
+                        $item->maintenance_department_id   = $record->maintenance_department_id;
+                        $item->status   = $record->status;
+                        $item->note   = $data['note'];
+                        $item->save();
+
+                        $record->save();
+                    })
                     // Action::make('damged')
                     // ->iconButton()
                     // ->color('danger')
@@ -169,7 +202,7 @@ class ItemResource extends Resource
 
     public static function getRelations(): array
     {
-        return [RelationManagers\MaintenanceItemsRelationManager::class];
+        return [];
     }
 
     public static function getPages(): array

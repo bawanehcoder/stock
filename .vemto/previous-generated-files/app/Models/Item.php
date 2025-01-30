@@ -25,4 +25,9 @@ class Item extends Model
     {
         return $this->hasMany(MaintenanceItem::class);
     }
+
+    public function maintenanceDepartment()
+    {
+        return $this->belongsTo(MaintenanceDepartment::class);
+    }
 }

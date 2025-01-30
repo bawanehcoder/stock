@@ -61,7 +61,14 @@
             </x-slot>
 
             <x-slot name="content">
-                <x-dropdown-link> No items found </x-dropdown-link>
+                @can('view-any', App\Models\Supplier::class)
+                <x-dropdown-link
+                    wire:navigate
+                    href="{{ route('dashboard.suppliers.index') }}"
+                >
+                    {{ __('navigation.suppliers') }}
+                </x-dropdown-link>
+                @endcan
             </x-slot>
         </x-dropdown>
     </div>

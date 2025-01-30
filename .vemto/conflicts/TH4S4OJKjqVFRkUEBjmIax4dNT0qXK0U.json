@@ -1,0 +1,9 @@
+{
+    "conflicts": [
+        {
+            "id": "784287ff-8b31-446c-9c39-cf8bf41e76db",
+            "currentContent": "<?php\n\nnamespace App\\Filament\\Resources\\Panel\\AssetResource\\Pages;\n\nuse Filament\\Actions;\nuse Filament\\Resources\\Pages\\ListRecords;\nuse App\\Filament\\Resources\\Panel\\AssetResource;\n\nclass ListAssets extends ListRecords\n{\n    protected static string $resource = AssetResource::class;\n\n    protected function getHeaderActions(): array\n    {\n        return [];\n    }\n}\n",
+            "newContent": "<?php\n\nnamespace App\\Filament\\Resources\\Panel\\AssetResource\\Pages;\n\nuse Filament\\Actions;\nuse Filament\\Resources\\Pages\\ListRecords;\nuse App\\Filament\\Resources\\Panel\\AssetResource;\n\nclass ListAssets extends ListRecords\n{\n    protected static string $resource = AssetResource::class;\n\n    protected function getHeaderActions(): array\n    {\n        return [Actions\\CreateAction::make()];\n    }\n}\n"
+        }
+    ]
+}

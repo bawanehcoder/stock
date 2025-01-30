@@ -97,7 +97,10 @@ class MaintenanceDepartmentResource extends Resource
 
     public static function getRelations(): array
     {
-        return [RelationManagers\MaintenanceItemsRelationManager::class];
+        return [
+            RelationManagers\MaintenanceItemsRelationManager::class,
+            RelationManagers\UsersRelationManager::class,
+        ];
     }
 
     public static function getPages(): array

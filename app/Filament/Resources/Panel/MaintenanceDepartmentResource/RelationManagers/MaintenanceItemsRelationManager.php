@@ -17,7 +17,7 @@ use App\Filament\Resources\Panel\MaintenanceDepartmentResource;
 
 class MaintenanceItemsRelationManager extends RelationManager
 {
-    protected static string $relationship = 'maintenanceItems';
+    protected static string $relationship = 'items';
 
     protected static ?string $recordTitleAttribute = 'status';
 
@@ -41,13 +41,6 @@ class MaintenanceItemsRelationManager extends RelationManager
                     ->searchable()
                     ->preload()
                     ->native(false),
-
-                Select::make('asset_id')
-                    ->required()
-                    ->relationship('asset', 'name')
-                    ->searchable()
-                    ->preload()
-                    ->native(false),
             ]),
         ]);
     }
@@ -61,8 +54,6 @@ class MaintenanceItemsRelationManager extends RelationManager
                 TextColumn::make('note')->limit(255),
 
                 TextColumn::make('item.name'),
-
-                TextColumn::make('asset.name'),
             ])
             ->filters([])
             ->headerActions([Tables\Actions\CreateAction::make()])

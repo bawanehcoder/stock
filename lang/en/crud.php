@@ -449,4 +449,8 @@ return [
             ],
         ],
     ],
+    'maintenanceDepartmentUser' => [
+        'itemTitle' => 'Maintenance Department User',
+        'collectionTitle' => 'Maintenance Department User',
+    ],
 ];

@@ -72,13 +72,6 @@ class MaintenanceItemResource extends Resource
                         ->searchable()
                         ->preload()
                         ->native(false),
-
-                    Select::make('asset_id')
-                        ->required()
-                        ->relationship('asset', 'name')
-                        ->searchable()
-                        ->preload()
-                        ->native(false),
                 ]),
             ]),
         ]);
@@ -96,8 +89,6 @@ class MaintenanceItemResource extends Resource
                 TextColumn::make('item.name'),
 
                 TextColumn::make('maintenanceDepartment.name'),
-
-                TextColumn::make('asset.name'),
             ])
             ->filters([])
             ->actions([

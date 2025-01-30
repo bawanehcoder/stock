@@ -41,13 +41,6 @@ class MaintenanceItemsRelationManager extends RelationManager
                     ->searchable()
                     ->preload()
                     ->native(false),
-
-                Select::make('asset_id')
-                    ->required()
-                    ->relationship('asset', 'name')
-                    ->searchable()
-                    ->preload()
-                    ->native(false),
             ]),
         ]);
     }
@@ -61,8 +54,6 @@ class MaintenanceItemsRelationManager extends RelationManager
                 TextColumn::make('note')->limit(255),
 
                 TextColumn::make('item.name'),
-
-                TextColumn::make('asset.name'),
             ])
             ->filters([])
             ->headerActions([Tables\Actions\CreateAction::make()])

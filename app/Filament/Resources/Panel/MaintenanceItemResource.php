@@ -2,8 +2,12 @@
 
 namespace App\Filament\Resources\Panel;
 
+use App\Models\Item;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Columns\ImageColumn;
 use Livewire\Component;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
@@ -21,7 +25,7 @@ use App\Filament\Resources\Panel\MaintenanceItemResource\RelationManagers;
 
 class MaintenanceItemResource extends Resource
 {
-    protected static ?string $model = MaintenanceItem::class;
+    protected static ?string $model = Item::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-cog';
 
@@ -49,33 +53,33 @@ class MaintenanceItemResource extends Resource
         return $form->schema([
             Section::make()->schema([
                 Grid::make(['default' => 1])->schema([
-                    TextInput::make('status')
+                    TextInput::make('name')
                         ->required()
                         ->string()
                         ->autofocus(),
 
-                    RichEditor::make('note')
+                    Select::make('status')
                         ->required()
-                        ->string()
-                        ->fileAttachmentsVisibility('public'),
+                        ->searchable()
+                        ->preload()
+                        ->native(false)
+                        ->options([
+                            'in_where_house' => 'In where house',
+                            'asset' => 'Asset',
+                            'in_maintenance' => 'In maintenance',
+                            'damaged' => 'Damaged',
+                        ]),
 
-                    Select::make('item_id')
+                    Select::make('user_id')
                         ->required()
-                        ->relationship('item', 'name')
+                        ->relationship('user', 'name')
                         ->searchable()
                         ->preload()
                         ->native(false),
 
-                    Select::make('maintenance_department_id')
+                    Select::make('warehouse_id')
                         ->required()
-                        ->relationship('maintenanceDepartment', 'name')
-                        ->searchable()
-                        ->preload()
-                        ->native(false),
-
-                    Select::make('asset_id')
-                        ->required()
-                        ->relationship('asset', 'name')
+                        ->relationship('warehouse', 'name')
                         ->searchable()
                         ->preload()
                         ->native(false),
@@ -89,25 +93,70 @@ class MaintenanceItemResource extends Resource
         return $table
             ->poll('60s')
             ->columns([
-                TextColumn::make('status'),
+                TextColumn::make('barcode')->searchable(),
+                ImageColumn::make('barcode_image'),
+                TextColumn::make('name')->searchable(),
 
-                TextColumn::make('note')->limit(255),
+                TextColumn::make('status')
+                ->badge()
+                ->color(
+                    fn(string $state): string => match ($state) {
+                        'in_maintenance' => 'info',
+                        'in_where_house' => 'success',
+                        'damaged' => 'danger',
+                    }
+                ),
 
-                TextColumn::make('item.name'),
 
+                TextColumn::make('warehouse.name'),
+
+                TextColumn::make('note')->limit(255)
+                ->getStateUsing(function ($record) {
+                    return $record->maintenanceItems()->first()->note;
+                }),
                 TextColumn::make('maintenanceDepartment.name'),
 
-                TextColumn::make('asset.name'),
             ])
-            ->filters([])
+            ->filters([
+                // Tables\Filters\SelectFilter::make('status'),
+                // Tables\Filters\SearchFilter::make('name'),
+                // Tables\Filters\TextFilter::make('note'),
+                // Tables\Filters\SelectFilter::make('warehouse_id'),
+                Tables\Filters\SelectFilter::make('maintenance_department_id')
+                ->relationship('maintenanceDepartment', 'name')
+                // Tables\Filters\SelectFilter::make('asset_id'),
+            ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                // Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make(),
+                Action::make('mark_as_fexed')
+                    ->button()
+                    ->color('success')
+                    ->icon('heroicon-m-wrench-screwdriver')
+                    ->form(
+                        [
+                            Select::make('user_id')
+                                ->required()
+                                ->searchable()
+                                ->options(function () {
+                                    return User::all()
+                                        ->pluck('name', 'id');
+                                })
+                                ->placeholder('Select a User')
+                        ]
+                    )
+                    ->action(function ($record, array $data) {
+                        // Update the status when the action is triggered
+                        $record->status = 'asset';
+                        $record->user_id = $data['user_id'];
+                        $record->save();
+                    })
+                    ->tooltip('Mark as Fixed'),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                // Tables\Actions\BulkActionGroup::make([
+                //     Tables\Actions\DeleteBulkAction::make(),
+                // ]),
             ])
             ->defaultSort('id', 'desc');
     }

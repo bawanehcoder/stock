@@ -1,0 +1,9 @@
+{
+    "conflicts": [
+        {
+            "id": "70cee440-8107-4698-8c8c-f4634d40ced5",
+            "currentContent": "<?php\n\nnamespace App\\Filament\\Resources\\Panel\\MaintenanceDepartmentResource\\Pages;\n\nuse App\\Filament\\Resources\\Panel\\MaintenanceDepartmentResource\\Widgets\\Overview;\nuse Filament\\Actions;\nuse Filament\\Pages\\Concerns\\ExposesTableToWidgets;\nuse Filament\\Resources\\Pages\\ListRecords;\nuse App\\Filament\\Resources\\Panel\\MaintenanceDepartmentResource;\nuse Filament\\Resources\\Pages\\ListRecords\\Tab;\nuse Illuminate\\Database\\Eloquent\\Builder;\n\nclass ListMaintenanceDepartments extends ListRecords\n{\n    use ExposesTableToWidgets;\n    protected static string $resource = MaintenanceDepartmentResource::class;\n\n    protected function getHeaderActions(): array\n    {\n        return [Actions\\CreateAction::make()];\n    }\n\n    protected function getHeaderWidgets(): array\n    {\n        return [\n            Overview::class,\n        ];\n    }\n\n    public function getTabs(): array\n{\n    return [\n        'all' => Tab::make(),\n        'internal' => Tab::make()\n            ->modifyQueryUsing(fn (Builder $query) => $query->where('type', 'internal')),\n        'external' => Tab::make()\n            ->modifyQueryUsing(fn (Builder $query) => $query->where('type', 'external')),\n    ];\n}\n}\n",
+            "newContent": "<?php\n\nnamespace App\\Filament\\Resources\\Panel\\MaintenanceDepartmentResource\\Pages;\n\nuse Filament\\Actions;\nuse Filament\\Resources\\Pages\\ListRecords;\nuse App\\Filament\\Resources\\Panel\\MaintenanceDepartmentResource;\n\nclass ListMaintenanceDepartments extends ListRecords\n{\n    protected static string $resource = MaintenanceDepartmentResource::class;\n\n    protected function getHeaderActions(): array\n    {\n        return [Actions\\CreateAction::make()];\n    }\n}\n"
+        }
+    ]
+}

@@ -29,6 +29,7 @@ class ItemFactory extends Factory
             'barcode_image' => fake()->text(255),
             'user_id' => \App\Models\User::factory(),
             'warehouse_id' => \App\Models\Warehouse::factory(),
+            'maintenance_department_id' => \App\Models\MaintenanceDepartment::factory(),
         ];
     }
 }

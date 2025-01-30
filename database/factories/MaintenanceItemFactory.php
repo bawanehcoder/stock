@@ -27,7 +27,6 @@ class MaintenanceItemFactory extends Factory
             'note' => fake()->word(),
             'item_id' => \App\Models\Item::factory(),
             'maintenance_department_id' => \App\Models\MaintenanceDepartment::factory(),
-            'asset_id' => \App\Models\Asset::factory(),
             'damaged_id' => \App\Models\Damaged::factory(),
         ];
     }

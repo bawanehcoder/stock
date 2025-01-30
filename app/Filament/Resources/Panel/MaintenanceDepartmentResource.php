@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Panel;
 
 use App\Filament\Resources\Panel\MaintenanceDepartmentResource\Widgets\Overview;
+use App\Filament\Resources\Panel\WarehouseResource\RelationManagers\UsersRelationManager;
 use Filament\Forms;
 use Filament\Tables;
 use Livewire\Component;
@@ -92,7 +93,7 @@ class MaintenanceDepartmentResource extends Resource
                     }),
                 TextColumn::make('items.count')->default(0)->label('Items Count')->badge()
                     ->getStateUsing(function ($record) {
-                        return $record->maintenanceItems->count();
+                        return $record->items->count();
                     }),
             ])
             ->filters([])
@@ -110,7 +111,11 @@ class MaintenanceDepartmentResource extends Resource
 
     public static function getRelations(): array
     {
-        return [RelationManagers\MaintenanceItemsRelationManager::class];
+        return [
+            RelationManagers\MaintenanceItemsRelationManager::class,
+            UsersRelationManager::class,
+            
+        ];
     }
 
     public static function getPages(): array
