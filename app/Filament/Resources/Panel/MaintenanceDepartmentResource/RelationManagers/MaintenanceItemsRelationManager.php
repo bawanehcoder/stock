@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Panel\MaintenanceDepartmentResource\RelationMan
 use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Form;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Table;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
@@ -49,22 +50,37 @@ class MaintenanceItemsRelationManager extends RelationManager
     {
         return $table
             ->columns([
-                TextColumn::make('status'),
+                TextColumn::make('barcode')->searchable(),
+                ImageColumn::make('barcode_image'),
+                TextColumn::make('name')->searchable(),
 
-                TextColumn::make('note')->limit(255),
+                TextColumn::make('status')
+                    ->badge()
+                    ->color(
+                        fn(string $state): string => match ($state) {
+                            'in_maintenance' => 'info',
+                            'in_where_house' => 'success',
+                            'damaged' => 'danger',
+                            'asset' => 'success',
+                        }
+                    ),
 
-                TextColumn::make('item.name'),
+
+                TextColumn::make('warehouse.name'),
+
+                TextColumn::make('note')->limit(255)
+                    ->getStateUsing(function ($record) {
+                        return $record->maintenanceItems()->latest()->first()->note;
+                    }),
+                TextColumn::make('maintenanceDepartment.name'),
             ])
             ->filters([])
-            ->headerActions([Tables\Actions\CreateAction::make()])
+            ->headerActions([])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+               
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+               
             ]);
     }
 }

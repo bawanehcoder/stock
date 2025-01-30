@@ -6,6 +6,7 @@ use App\Filament\Resources\Panel\ItemResource\RelationManagers\MaintenanceItemsR
 use App\Models\Item;
 use App\Models\User;
 use Filament\Forms;
+use Filament\Forms\Components\Textarea;
 use Filament\Tables;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\ImageColumn;
@@ -139,31 +140,58 @@ class MaintenanceItemResource extends Resource
                 // Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make(),
                 Action::make('mark_as_fexed')
-                    ->button()
-                    ->color('success')
-                    ->icon('heroicon-m-wrench-screwdriver')
-                    ->requiresConfirmation()
-                    ->action(function ($record, array $data) {
-                        if ($record->user_id == null) {
-                            $record->status = 'in_where_house';
-                        } else {
-                            $record->status = 'asset';
-                        }
+                ->button()
+                ->color('success')
+                ->icon('heroicon-m-wrench-screwdriver')
+                ->form([
+                    Textarea::make('note')
+                        ->required()
+                        ->autofocus(),
+                ])
+                ->action(function ($record, array $data) {
+                    if ($record->user_id == null) {
+                        $record->status = 'in_where_house';
+                    } else {
+                        $record->status = 'asset';
+                    }
 
-                        $record->save();
-                    })
-                    ->tooltip('Mark as Fixed'),
-                Action::make('damged')
-                    ->iconButton()
-                    ->color('danger')
-                    ->icon('heroicon-m-trash')
-                    ->tooltip('Mark as Damged')
-                    ->requiresConfirmation()
-                    ->action(function ($record, array $data) {
+                    $item = new MaintenanceItem();
+                    $item->asset_id = $record->id;
+                    $item->item_id = $record->id;
+                    $item->damaged_id = $record->id;
+                    $item->maintenance_department_id = $record->maintenance_department_id;
+                    $item->status = $record->status;
+                    $item->note = $data['note'];
+                    $item->save();
 
-                        $record->status = 'damaged';
-                        $record->save();
-                    })
+                    $record->save();
+                })
+                ->tooltip('Mark as Fixed'),
+            Action::make('damged')
+                ->iconButton()
+                ->color('danger')
+                ->icon('heroicon-m-trash')
+                ->tooltip('Mark as Damged')
+                // ->label('Mark as Damged')
+                ->form([
+                    Textarea::make('note')
+                        ->required()
+                        ->autofocus(),
+                ])
+                ->action(function ($record, array $data) {
+
+                    $record->status = 'damaged';
+                    $record->save();
+
+                    $item = new MaintenanceItem();
+                    $item->asset_id = $record->id;
+                    $item->item_id = $record->id;
+                    $item->damaged_id = $record->id;
+                    $item->maintenance_department_id = $record->maintenance_department_id;
+                    $item->status = $record->status;
+                    $item->note = $data['note'];
+                    $item->save();
+                })
             ])
             ->bulkActions([
                 // Tables\Actions\BulkActionGroup::make([
