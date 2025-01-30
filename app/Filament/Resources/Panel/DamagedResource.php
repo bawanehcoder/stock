@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Panel;
 
+use App\Filament\Resources\Panel\ItemResource\RelationManagers\MaintenanceItemsRelationManager;
 use Filament\Forms;
 use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
@@ -50,7 +51,7 @@ class DamagedResource extends Resource
     {
         return $form->schema([
             Section::make()->schema([
-                Grid::make(['default' => 1])->schema([
+                Grid::make(['default' => 2])->schema([
                     TextInput::make('name')
                         ->required()
                         ->string()
@@ -68,6 +69,13 @@ class DamagedResource extends Resource
                             'damaged' => 'Damaged',
                         ]),
 
+                    Select::make('user_id')
+                        ->required()
+                        ->relationship('user', 'name')
+                        ->searchable()
+                        ->preload()
+                        ->native(false),
+
                     Select::make('warehouse_id')
                         ->required()
                         ->relationship('warehouse', 'name')
@@ -75,20 +83,12 @@ class DamagedResource extends Resource
                         ->preload()
                         ->native(false),
 
-                    Select::make('user_id')
-                        ->nullable()
-                        ->relationship('user', 'name')
-                        ->searchable()
-                        ->preload()
-                        ->native(false),
-
-                    TextInput::make('barcode')
-                        ->nullable()
-                        ->string(),
-
-                    TextInput::make('barcode_image')
-                        ->nullable()
-                        ->string(),
+                    // Select::make('maintenance_department_id ')
+                    // ->required()
+                    // ->relationship('maintenanceDepartment', 'name')
+                    // ->searchable()
+                    // ->preload()
+                    // ->native(false),
                 ]),
             ]),
         ]);
@@ -138,7 +138,10 @@ class DamagedResource extends Resource
 
     public static function getRelations(): array
     {
-        return [];
+        return [
+            MaintenanceItemsRelationManager::class
+
+        ];
     }
 
     public static function getPages(): array
