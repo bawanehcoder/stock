@@ -112,6 +112,7 @@ class MaintenanceItemResource extends Resource
                             'in_maintenance' => 'info',
                             'in_where_house' => 'success',
                             'damaged' => 'danger',
+                            'asset' => 'success',
                         }
                     ),
 
@@ -120,7 +121,7 @@ class MaintenanceItemResource extends Resource
 
                 TextColumn::make('note')->limit(255)
                     ->getStateUsing(function ($record) {
-                        return $record->maintenanceItems()->first()->note;
+                        return $record->maintenanceItems()->latest()->first()->note;
                     }),
                 TextColumn::make('maintenanceDepartment.name'),
 
@@ -141,22 +142,14 @@ class MaintenanceItemResource extends Resource
                     ->button()
                     ->color('success')
                     ->icon('heroicon-m-wrench-screwdriver')
-                    ->form(
-                        [
-                            Select::make('user_id')
-                                ->required()
-                                ->searchable()
-                                ->options(function () {
-                                    return User::all()
-                                        ->pluck('name', 'id');
-                                })
-                                ->placeholder('Select a User')
-                        ]
-                    )
+                    ->requiresConfirmation()
                     ->action(function ($record, array $data) {
-                        // Update the status when the action is triggered
-                        $record->status = 'asset';
-                        $record->user_id = $data['user_id'];
+                        if ($record->user_id == null) {
+                            $record->status = 'in_where_house';
+                        } else {
+                            $record->status = 'asset';
+                        }
+
                         $record->save();
                     })
                     ->tooltip('Mark as Fixed'),
@@ -165,6 +158,12 @@ class MaintenanceItemResource extends Resource
                     ->color('danger')
                     ->icon('heroicon-m-trash')
                     ->tooltip('Mark as Damged')
+                    ->requiresConfirmation()
+                    ->action(function ($record, array $data) {
+
+                        $record->status = 'damaged';
+                        $record->save();
+                    })
             ])
             ->bulkActions([
                 // Tables\Actions\BulkActionGroup::make([
@@ -192,6 +191,10 @@ class MaintenanceItemResource extends Resource
     }
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::count();
+        return static::getModel()::query()->where('status', 'in_maintenance')->count();
+    }
+    public static function getEloquentQuery(): Builder
+    {
+        return static::getModel()::query()->where('status', 'in_maintenance');
     }
 }

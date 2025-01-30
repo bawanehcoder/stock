@@ -53,7 +53,7 @@ class ItemResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return static::getModel()::query()->where('status','in_where_house');
+        return static::getModel()::query()->where('status', 'in_where_house');
     }
 
     public static function form(Form $form): Form
@@ -106,20 +106,20 @@ class ItemResource extends Resource
                 TextColumn::make('name')->searchable(),
 
                 TextColumn::make('status')
-                ->badge()
-                ->color(
-                    fn(string $state): string => match ($state) {
-                        'in_maintenance' => 'info',
-                        'in_where_house' => 'success',
-                        'damaged' => 'danger',
-                    }
-                ),
+                    ->badge()
+                    ->color(
+                        fn(string $state): string => match ($state) {
+                            'in_maintenance' => 'info',
+                            'in_where_house' => 'success',
+                            'damaged' => 'danger',
+                        }
+                    ),
 
 
                 TextColumn::make('warehouse.name'),
             ])
             ->filters([
-                
+
 
                 SelectFilter::make('warehouse_id')
                     ->relationship('warehouse', 'name'),
@@ -130,19 +130,19 @@ class ItemResource extends Resource
                 // Tables\Actions\EditAction::make(),
                 // Tables\Actions\ViewAction::make(),
                 Action::make('assign_to_user')
-                ->button()
-                ->color('success')
+                    ->button()
+                    ->color('success')
                     ->icon('heroicon-m-user-circle')
                     ->form(
                         [
                             Select::make('user_id')
-                            ->required()
-                            ->searchable()
-                            ->options(function () {
-                                return User::all()
-                                    ->pluck('name', 'id');
-                            })
-                            ->placeholder('Select a User')
+                                ->required()
+                                ->searchable()
+                                ->options(function () {
+                                    return User::all()
+                                        ->pluck('name', 'id');
+                                })
+                                ->placeholder('Select a User')
                         ]
                     )
                     ->action(function ($record, array $data) {
@@ -152,24 +152,24 @@ class ItemResource extends Resource
                         $record->save();
                     })
                     ->tooltip('Assign to user'),
-                    Action::make('send_to_maintenance_departments')
+                Action::make('send_to_maintenance_departments')
                     ->iconButton()
                     ->icon('heroicon-m-wrench-screwdriver')
                     ->tooltip('Send to Maintenance Departments')
                     ->form(
                         [
                             Select::make('maintenance_department_id')
-                            ->required()
-                            ->searchable()
-                            ->options(function () {
-                                return MaintenanceDepartment::all()
-                                    ->pluck('name', 'id');
-                            })
-                            ->placeholder('Select a Department'),
+                                ->required()
+                                ->searchable()
+                                ->options(function () {
+                                    return MaintenanceDepartment::all()
+                                        ->pluck('name', 'id');
+                                })
+                                ->placeholder('Select a Department'),
                             Textarea::make('note'),
                         ]
                     )
-                    
+
                     ->action(function ($record, array $data) {
                         // Update the status when the action is triggered
                         $record->status = 'in_maintenance';
@@ -178,19 +178,19 @@ class ItemResource extends Resource
                         $item = new MaintenanceItem();
                         $item->asset_id = $record->id;
                         $item->item_id = $record->id;
-                        $item->damaged_id  = $record->id;
-                        $item->maintenance_department_id   = $record->maintenance_department_id;
-                        $item->status   = $record->status;
-                        $item->note   = $data['note'];
+                        $item->damaged_id = $record->id;
+                        $item->maintenance_department_id = $record->maintenance_department_id;
+                        $item->status = $record->status;
+                        $item->note = $data['note'];
                         $item->save();
 
                         $record->save();
                     })
-                    // Action::make('damged')
-                    // ->iconButton()
-                    // ->color('danger')
-                    // ->icon('heroicon-m-trash')
-                    // ->tooltip('Mark as Damged')
+                // Action::make('damged')
+                // ->iconButton()
+                // ->color('danger')
+                // ->icon('heroicon-m-trash')
+                // ->tooltip('Mark as Damged')
             ])
             ->bulkActions([
                 // Tables\Actions\BulkActionGroup::make([
@@ -216,6 +216,6 @@ class ItemResource extends Resource
     }
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::query()->where('status','in_where_house')->count();
+        return static::getModel()::query()->where('status', 'in_where_house')->count();
     }
 }

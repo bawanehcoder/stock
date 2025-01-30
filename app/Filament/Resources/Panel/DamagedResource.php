@@ -4,6 +4,9 @@ namespace App\Filament\Resources\Panel;
 
 use Filament\Forms;
 use Filament\Tables;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\SelectFilter;
 use Livewire\Component;
 use App\Models\Damaged;
 use Filament\Forms\Form;
@@ -101,27 +104,34 @@ class DamagedResource extends Resource
         return $table
             ->poll('60s')
             ->columns([
-                TextColumn::make('name'),
+                TextColumn::make('barcode')->searchable(),
+                ImageColumn::make('barcode_image'),
+                TextColumn::make('name')->searchable(),
 
-                TextColumn::make('status'),
-
-                TextColumn::make('warehouse.name'),
-
+                TextColumn::make('status')
+                    ->badge()
+                    ->color('danger'),
                 TextColumn::make('user.name'),
-
-                TextColumn::make('barcode'),
-
-                TextColumn::make('barcode_image'),
+                TextColumn::make('maintenanceDepartment.name'),
+                TextColumn::make('warehouse.name'),
             ])
-            ->filters([])
+            ->filters([
+                SelectFilter::make('warehouse_id')
+                    ->relationship('warehouse', 'name'),
+                SelectFilter::make('user_id')
+                    ->relationship('user', 'name'),
+                SelectFilter::make('maintenanceDepartment')
+                    ->relationship('maintenanceDepartment', 'name'),
+            ], FiltersLayout::AboveContent)
+            ->filtersFormColumns(3)
             ->actions([
-                Tables\Actions\EditAction::make(),
+                // Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                // Tables\Actions\BulkActionGroup::make([
+                //     Tables\Actions\DeleteBulkAction::make(),
+                // ]),
             ])
             ->defaultSort('id', 'desc');
     }

@@ -54,6 +54,7 @@ class MaintenanceItemsRelationManager extends RelationManager
                 TextColumn::make('note')->limit(255),
 
                 TextColumn::make('maintenanceDepartment.name'),
+                TextColumn::make('created_at'),
             ])
             ->filters([])
             ->headerActions([Tables\Actions\CreateAction::make()])
