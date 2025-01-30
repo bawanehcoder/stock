@@ -5,7 +5,7 @@
                 "uuid": "df92816c-91ba-425d-b481-a71bb1a20579",
                 "id": 1,
                 "createdAt": "2025-01-29 16:24:53",
-                "updatedAt": "2025-01-30 13:40:47",
+                "updatedAt": "2025-01-30 14:36:15",
                 "settings": {
                     "cssFramework": "tailwind",
                     "uiStarterKit": "jetstream",
