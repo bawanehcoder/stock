@@ -5,6 +5,8 @@ namespace App\Filament\Resources\Panel;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\User;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\SelectFilter;
 use Livewire\Component;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
@@ -81,10 +83,23 @@ class EmployeeResource extends Resource
         return $table
             ->poll('60s')
             ->columns([
-                TextColumn::make('name'),
-                TextColumn::make('email')
+                TextColumn::make('name')->searchable(),
+                TextColumn::make('email')->searchable(),
+                TextColumn::make('roles.name')->badge(),
+                TextColumn::make('warehouses.name')->default('None'),
+                TextColumn::make('maintenanceDepartments.name')->default('None'),
+
             ])
-            ->filters([])
+            ->filters([
+                SelectFilter::make('role_id')
+                    ->relationship('roles', 'name'),
+                    SelectFilter::make('warehouse_id')
+                    ->relationship('warehouses', 'name'),
+                SelectFilter::make('maintenance_department_id')
+                    ->relationship('maintenanceDepartments', 'name')
+            ], FiltersLayout::AboveContent)
+            ->filtersFormColumns(3  )
+
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make(),
