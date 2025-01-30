@@ -49,7 +49,7 @@ class MaintenanceItemsRelationManager extends RelationManager
     {
         return $table
             ->columns([
-                TextColumn::make('status'),
+                TextColumn::make('status')->badge(),
 
                 TextColumn::make('note')->limit(255),
 

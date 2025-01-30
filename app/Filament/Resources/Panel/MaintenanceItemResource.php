@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Panel;
 
+use App\Filament\Resources\Panel\ItemResource\RelationManagers\MaintenanceItemsRelationManager;
 use App\Models\Item;
 use App\Models\User;
 use Filament\Forms;
@@ -52,7 +53,7 @@ class MaintenanceItemResource extends Resource
     {
         return $form->schema([
             Section::make()->schema([
-                Grid::make(['default' => 1])->schema([
+                Grid::make(['default' => 2])->schema([
                     TextInput::make('name')
                         ->required()
                         ->string()
@@ -83,6 +84,13 @@ class MaintenanceItemResource extends Resource
                         ->searchable()
                         ->preload()
                         ->native(false),
+
+                    // Select::make('maintenance_department_id ')
+                    // ->required()
+                    // ->relationship('maintenanceDepartment', 'name')
+                    // ->searchable()
+                    // ->preload()
+                    // ->native(false),
                 ]),
             ]),
         ]);
@@ -98,22 +106,22 @@ class MaintenanceItemResource extends Resource
                 TextColumn::make('name')->searchable(),
 
                 TextColumn::make('status')
-                ->badge()
-                ->color(
-                    fn(string $state): string => match ($state) {
-                        'in_maintenance' => 'info',
-                        'in_where_house' => 'success',
-                        'damaged' => 'danger',
-                    }
-                ),
+                    ->badge()
+                    ->color(
+                        fn(string $state): string => match ($state) {
+                            'in_maintenance' => 'info',
+                            'in_where_house' => 'success',
+                            'damaged' => 'danger',
+                        }
+                    ),
 
 
                 TextColumn::make('warehouse.name'),
 
                 TextColumn::make('note')->limit(255)
-                ->getStateUsing(function ($record) {
-                    return $record->maintenanceItems()->first()->note;
-                }),
+                    ->getStateUsing(function ($record) {
+                        return $record->maintenanceItems()->first()->note;
+                    }),
                 TextColumn::make('maintenanceDepartment.name'),
 
             ])
@@ -123,7 +131,7 @@ class MaintenanceItemResource extends Resource
                 // Tables\Filters\TextFilter::make('note'),
                 // Tables\Filters\SelectFilter::make('warehouse_id'),
                 Tables\Filters\SelectFilter::make('maintenance_department_id')
-                ->relationship('maintenanceDepartment', 'name')
+                    ->relationship('maintenanceDepartment', 'name')
                 // Tables\Filters\SelectFilter::make('asset_id'),
             ])
             ->actions([
@@ -152,6 +160,11 @@ class MaintenanceItemResource extends Resource
                         $record->save();
                     })
                     ->tooltip('Mark as Fixed'),
+                Action::make('damged')
+                    ->iconButton()
+                    ->color('danger')
+                    ->icon('heroicon-m-trash')
+                    ->tooltip('Mark as Damged')
             ])
             ->bulkActions([
                 // Tables\Actions\BulkActionGroup::make([
@@ -163,7 +176,9 @@ class MaintenanceItemResource extends Resource
 
     public static function getRelations(): array
     {
-        return [];
+        return [
+            MaintenanceItemsRelationManager::class
+        ];
     }
 
     public static function getPages(): array
