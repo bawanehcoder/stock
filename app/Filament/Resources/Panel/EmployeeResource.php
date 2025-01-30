@@ -80,7 +80,10 @@ class EmployeeResource extends Resource
     {
         return $table
             ->poll('60s')
-            ->columns([TextColumn::make('name'), TextColumn::make('email')])
+            ->columns([
+                TextColumn::make('name'),
+                TextColumn::make('email')
+            ])
             ->filters([])
             ->actions([
                 Tables\Actions\EditAction::make(),

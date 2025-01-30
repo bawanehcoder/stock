@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Panel;
 
+use App\Filament\Resources\Panel\MaintenanceDepartmentResource\Widgets\Overview;
 use Filament\Forms;
 use Filament\Tables;
 use Livewire\Component;
@@ -62,7 +63,7 @@ class MaintenanceDepartmentResource extends Resource
                         ->searchable()
                         ->preload()
                         ->native(false)
-                        ->options([
+                        ->options(options: [
                             'internal' => 'Internal',
                             'external' => 'External',
                         ]),
@@ -76,11 +77,23 @@ class MaintenanceDepartmentResource extends Resource
         return $table
             ->poll('60s')
             ->columns([
-                TextColumn::make('name'),
+                TextColumn::make('name')->searchable(),
 
                 TextColumn::make('location'),
 
-                TextColumn::make('type'),
+                TextColumn::make('type')->badge()
+                ->colors([
+                    'success' => 'internal',
+                    'danger' => 'external',
+                ]),
+                TextColumn::make('users.count')->label('Emplyess Count')->default(0)->badge()
+                    ->getStateUsing(function ($record) {
+                        return $record->users->count();
+                    }),
+                TextColumn::make('items.count')->default(0)->label('Items Count')->badge()
+                    ->getStateUsing(function ($record) {
+                        return $record->maintenanceItems->count();
+                    }),
             ])
             ->filters([])
             ->actions([
@@ -112,5 +125,12 @@ class MaintenanceDepartmentResource extends Resource
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            Overview::class,
+        ];
     }
 }
