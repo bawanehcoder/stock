@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\Panel\AssetResource\Pages;
 
-use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 use App\Filament\Resources\Panel\AssetResource;
 
@@ -12,6 +11,8 @@ class ListAssets extends ListRecords
 
     protected function getHeaderActions(): array
     {
-        return [];
+        return [
+           
+        ];
     }
 }

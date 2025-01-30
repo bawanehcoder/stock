@@ -49,12 +49,20 @@ class MaintenanceItemsRelationManager extends RelationManager
     {
         return $table
             ->columns([
-                TextColumn::make('status')->badge(),
+                TextColumn::make('status')->badge()
+                ->color(
+                    fn(string $state): string => match ($state) {
+                        'in_maintenance' => 'info',
+                        'in_where_house' => 'success',
+                        'damaged' => 'danger',
+                        'asset' => 'success',
+                    }
+                ),
 
                 TextColumn::make('note')->limit(255),
 
                 TextColumn::make('maintenanceDepartment.name'),
-                TextColumn::make('created_at'),
+                TextColumn::make('created_at')->label('Date'),
             ])
             ->filters([])
             ->headerActions([Tables\Actions\CreateAction::make()])

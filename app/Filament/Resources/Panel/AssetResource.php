@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Panel;
 
+use App\Filament\Resources\Panel\ItemResource\RelationManagers\MaintenanceItemsRelationManager;
 use App\Models\MaintenanceDepartment;
 use App\Models\MaintenanceItem;
 use Filament\Forms;
@@ -54,7 +55,7 @@ class AssetResource extends Resource
     {
         return $form->schema([
             Section::make()->schema([
-                Grid::make(['default' => 1])->schema([
+                Grid::make(['default' => 2])->schema([
                     TextInput::make('name')
                         ->required()
                         ->string()
@@ -173,7 +174,10 @@ class AssetResource extends Resource
 
     public static function getRelations(): array
     {
-        return [];
+        return [
+            MaintenanceItemsRelationManager::class
+
+        ];
     }
 
     public static function getPages(): array

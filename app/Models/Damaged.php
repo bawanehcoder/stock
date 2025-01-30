@@ -27,7 +27,7 @@ class Damaged extends Model
 
     public function maintenanceItems()
     {
-        return $this->hasMany(MaintenanceItem::class);
+        return $this->hasMany(MaintenanceItem::class)->orderBy('id','desc');;
     }
     public function maintenanceDepartment()
     {
